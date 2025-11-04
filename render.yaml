@@ -1,13 +1,10 @@
 services:
-  - type: web
+  - type: static
     name: tattoo-rounge-landing
-    runtime: docker
+    runtime: node
     plan: free
-    buildCommand: bun install
-    startCommand: bun src/index.ts
+    buildCommand: bun install && bun run build
+    staticPublishPath: ./dist
     envVars:
-      - key: PORT
-        value: 3000
       - key: NODE_ENV
         value: production
-    healthCheckPath: /

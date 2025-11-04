@@ -9,6 +9,9 @@ RUN bun install --frozen-lockfile
 # Copy source code
 COPY . .
 
+# Build the application
+RUN bun run build
+
 # Expose port
 EXPOSE 3000
 
@@ -16,5 +19,5 @@ EXPOSE 3000
 ENV NODE_ENV=production
 ENV PORT=3000
 
-# Start the application
-CMD ["bun", "src/index.ts"]
+# Start the static file server
+CMD ["bun", "server.ts"]

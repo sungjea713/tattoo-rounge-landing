@@ -25,9 +25,8 @@ export default function FinalCTA() {
             {/* Main Copy */}
             <div className="space-y-6 max-w-4xl">
               <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
-                멈춰있던 잠재력이
-                <br />
-                <span className="text-gradient">깨어납니다.</span>
+                <span className="block mb-4">멈춰있던 잠재력이</span>
+                <span className="text-gradient block">깨어납니다.</span>
               </h2>
               <p className="text-2xl md:text-3xl lg:text-4xl text-gray-light font-light leading-relaxed">
                 새로운 시대의 기회는,

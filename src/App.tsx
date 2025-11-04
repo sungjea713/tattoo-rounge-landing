@@ -3,6 +3,8 @@ import Layout from "./components/Layout";
 import HeroSection from "./components/HeroSection";
 import CorePillars from "./components/CorePillars";
 import PrecisionTools from "./components/PrecisionTools";
+import PromptSection from "./components/PromptSection";
+import AIGallery from "./components/AIGallery";
 import FinalCTA from "./components/FinalCTA";
 
 export default function App() {
@@ -10,6 +12,8 @@ export default function App() {
     <Layout>
       <HeroSection />
       <PrecisionTools />
+      <PromptSection />
+      <AIGallery />
       <CorePillars />
       <FinalCTA />
     </Layout>

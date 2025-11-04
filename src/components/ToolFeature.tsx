@@ -5,9 +5,10 @@ interface ToolFeatureProps {
   description: string;
   imageUrl: string;
   reverse?: boolean;
+  icon?: React.ReactNode;
 }
 
-export default function ToolFeature({ title, description, imageUrl, reverse = false }: ToolFeatureProps) {
+export default function ToolFeature({ title, description, imageUrl, reverse = false, icon }: ToolFeatureProps) {
   const featureRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -49,7 +50,8 @@ export default function ToolFeature({ title, description, imageUrl, reverse = fa
 
       {/* Text Content */}
       <div className="w-full lg:w-1/2 space-y-6">
-        <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight">
+        <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight flex items-center gap-4">
+          {icon && <span className="text-white">{icon}</span>}
           {title}
         </h3>
         <p className="text-lg md:text-xl text-gray-light leading-relaxed">

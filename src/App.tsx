@@ -9,8 +9,8 @@ export default function App() {
   return (
     <Layout>
       <HeroSection />
-      <CorePillars />
       <PrecisionTools />
+      <CorePillars />
       <FinalCTA />
     </Layout>
   );

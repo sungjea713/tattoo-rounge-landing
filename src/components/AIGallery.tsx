@@ -41,29 +41,46 @@ const duplicatedImages = [...shuffledImages, ...shuffledImages];
 export default function AIGallery() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [animationDistance, setAnimationDistance] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    // Check if mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
     if (containerRef.current) {
       // Measure the width of half the container (one set of images)
       const fullWidth = containerRef.current.scrollWidth;
       const halfWidth = fullWidth / 2;
       setAnimationDistance(halfWidth);
     }
+
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  // Use fewer images on mobile for better performance
+  const imagesToShow = isMobile ? shuffledImages.slice(0, 7) : shuffledImages;
+  const finalImages = [...imagesToShow, ...imagesToShow];
 
   return (
     <>
       <style>{`
         @keyframes scroll-left {
           0% {
-            transform: translateX(0);
+            transform: translate3d(0, 0, 0);
           }
           100% {
-            transform: translateX(-${animationDistance}px);
+            transform: translate3d(-${animationDistance}px, 0, 0);
           }
         }
         .scroll-container {
-          animation: scroll-left 40s linear infinite;
+          animation: scroll-left ${isMobile ? '25s' : '40s'} linear infinite;
+          will-change: transform;
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
         }
       `}</style>
 
@@ -78,20 +95,21 @@ export default function AIGallery() {
         {/* Scrolling Gallery */}
         <div className="relative overflow-hidden">
           <div ref={containerRef} className="scroll-container flex">
-            {duplicatedImages.map((image, index) => (
+            {finalImages.map((image, index) => (
               <div
                 key={index}
                 className="flex-shrink-0 flex flex-col items-center gap-4"
               >
-                <div className="relative w-64 h-64 rounded-lg overflow-hidden bg-dark-50">
+                <div className={`relative ${isMobile ? 'w-48 h-48' : 'w-64 h-64'} rounded-lg overflow-hidden bg-dark-50`}>
                   <img
                     src={image.src}
                     alt={image.name}
-                    className="w-full h-full object-cover opacity-45 transition-opacity duration-300"
+                    loading="lazy"
+                    className="w-full h-full object-cover opacity-45"
                   />
                 </div>
                 <p
-                  className="text-4xl font-black whitespace-nowrap"
+                  className={`${isMobile ? 'text-2xl' : 'text-4xl'} font-black whitespace-nowrap`}
                   style={{
                     background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.15) 100%)',
                     WebkitBackgroundClip: 'text',

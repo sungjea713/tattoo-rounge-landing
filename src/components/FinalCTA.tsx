@@ -1,11 +1,8 @@
 import React, { useState, FormEvent, useEffect } from "react";
-import CTAButton from "./CTAButton";
-import ContactForm from "./ContactForm";
 import { Send } from "lucide-react";
 import emailjs from "@emailjs/browser";
 
 export default function FinalCTA() {
-  const [isContactFormOpen, setIsContactFormOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -216,10 +213,15 @@ export default function FinalCTA() {
               </form>
 
               {/* Contact Button */}
-              <div className="mt-8">
-                <CTAButton size="lg" variant="secondary" onClick={() => setIsContactFormOpen(true)}>
-                  문의하기
-                </CTAButton>
+              <div className="mt-4">
+                <a
+                  href="http://pf.kakao.com/_NxcwHn"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full block text-center bg-dark-300 border border-gray-border text-white font-semibold px-8 py-4 rounded-lg hover:border-white transition-all duration-300 hover:scale-105 active:scale-95"
+                >
+                  카카오톡 문의하기
+                </a>
               </div>
             </div>
 
@@ -278,9 +280,6 @@ export default function FinalCTA() {
         {/* Bottom Glow */}
         <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-4xl h-1 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
       </section>
-
-      {/* Contact Form Modal */}
-      <ContactForm isOpen={isContactFormOpen} onClose={() => setIsContactFormOpen(false)} />
     </>
   );
 }

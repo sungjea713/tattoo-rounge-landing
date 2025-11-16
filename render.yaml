@@ -6,4 +6,12 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
+      - key: VITE_GOOGLE_SCRIPT_URL
+        sync: false
+      - key: VITE_EMAILJS_SERVICE_ID
+        sync: false
+      - key: VITE_EMAILJS_TEMPLATE_ID
+        sync: false
+      - key: VITE_EMAILJS_PUBLIC_KEY
+        sync: false
     healthCheckPath: /

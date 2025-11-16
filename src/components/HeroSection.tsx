@@ -64,8 +64,8 @@ export default function HeroSection() {
       rightImageRef.current.style.setProperty('opacity', String(0.2 * (1 - progress)), 'important');
 
       // Phase 1: Modal slides up
-      const modalHeight = window.innerHeight * 0.85; // Use 85% of viewport height
-      const modalTranslateY = modalHeight - (phase1Progress * modalHeight); // Slides up in phase 1
+      const modalActualHeight = modalRef.current.offsetHeight; // Get actual rendered height
+      const modalTranslateY = modalActualHeight - (phase1Progress * modalActualHeight); // Slides up in phase 1
       modalRef.current.style.transform = `translateY(${modalTranslateY}px)`;
 
       // Phase 2: Entire container (section + modal) moves up
@@ -149,12 +149,44 @@ export default function HeroSection() {
             </div>
 
             {/* CTA Button */}
-            <div className="flex flex-col items-center gap-4 mt-8 opacity-0 animate-slide-up" style={{ animationDelay: "0.4s" }}>
-              <CTAButton size="lg" onClick={scrollToCTA}>
-                Tattoo Rounge 전문가로 합류하기
+            <div className="flex flex-col items-center gap-4 mt-4 opacity-0 animate-slide-up" style={{ animationDelay: "0.4s" }}>
+              <CTAButton size="lg" onClick={scrollToCTA} showIcon={true}>
+                타투 중개 플랫폼 사전접수 진행중
               </CTAButton>
-              <p className="text-base md:text-lg text-gray-medium">
-                선착순 혜택: <span className="text-white font-semibold">6개월 수수료 면제</span>
+              <style>{`
+                @keyframes ambient-text {
+                  0% {
+                    background-position: 0% 50%;
+                  }
+                  50% {
+                    background-position: 100% 50%;
+                  }
+                  100% {
+                    background-position: 0% 50%;
+                  }
+                }
+                .ambient-led-text {
+                  background: linear-gradient(90deg,
+                    #ef4444 0%,
+                    #f59e0b 16.67%,
+                    #10b981 33.33%,
+                    #3b82f6 50%,
+                    #8b5cf6 66.67%,
+                    #ec4899 83.33%,
+                    #ef4444 100%
+                  );
+                  background-size: 300% 100%;
+                  -webkit-background-clip: text;
+                  background-clip: text;
+                  -webkit-text-fill-color: transparent;
+                  animation: ambient-text 8s ease-in-out infinite;
+                  font-weight: 600;
+                  display: inline-block;
+                }
+              `}</style>
+              <p className="text-base md:text-lg">
+                <span className="ambient-led-text">사전 접수 할인혜택:</span>{' '}
+                <span className="text-white font-normal">~ 2025년 11월 30일</span>
               </p>
             </div>
           </div>
@@ -168,15 +200,16 @@ export default function HeroSection() {
           ref={modalRef}
           className="absolute left-[5%] right-[5%] bg-black/80 backdrop-blur-sm rounded-t-3xl overflow-hidden"
           style={{
-            height: '85vh',
+            maxHeight: '85vh',
+            minHeight: 'fit-content',
             bottom: 0,
-            transform: 'translateY(85vh)',
+            transform: 'translateY(100%)',
             willChange: 'transform',
             zIndex: 15
           }}
         >
           {/* Modal Content */}
-          <div className="relative h-full w-full flex items-center justify-center px-6 md:px-16 py-12 md:py-12">
+          <div className="relative w-full flex items-center justify-center px-4 sm:px-6 md:px-16 py-8 sm:py-10 md:py-12">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 max-w-7xl w-full items-center">
               {/* Left Side - Video */}
               <div className="flex items-center justify-center">
@@ -196,12 +229,12 @@ export default function HeroSection() {
               </div>
 
               {/* Right Side - Text Content */}
-              <div className="flex flex-col gap-6 text-white">
+              <div className="flex flex-col gap-4 sm:gap-6 text-white">
                 <div>
-                  <p className="text-xl md:text-2xl text-gray-300 mb-2">타투 예약, 도안 제작 플랫폼</p>
-                  <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold">타투라운지</h2>
+                  <p className="text-lg sm:text-xl md:text-2xl text-gray-300 mb-2">타투 예약, 도안 제작 플랫폼</p>
+                  <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold">타투라운지</h2>
                 </div>
-                <div className="text-lg md:text-xl leading-relaxed text-gray-200 flex flex-wrap gap-x-2 gap-y-3">
+                <div className="text-base sm:text-lg md:text-xl leading-relaxed text-gray-200 flex flex-wrap gap-x-2 gap-y-3">
                   <span className="feature-gradient-purple inline-flex items-center gap-1.5">
                     <Instagram size={18} className="icon-gradient-purple" />
                     인스타그램 계정 1초 이전

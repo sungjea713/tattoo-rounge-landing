@@ -1,9 +1,113 @@
-import React, { useState } from "react";
+import React, { useState, FormEvent, useEffect } from "react";
 import CTAButton from "./CTAButton";
 import ContactForm from "./ContactForm";
+import { Send } from "lucide-react";
+import emailjs from "@emailjs/browser";
 
 export default function FinalCTA() {
-  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isContactFormOpen, setIsContactFormOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    message: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
+
+  // EmailJS 초기화
+  useEffect(() => {
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+    if (publicKey) {
+      emailjs.init(publicKey);
+      console.log("EmailJS 초기화 완료");
+    } else {
+      console.error("VITE_EMAILJS_PUBLIC_KEY가 설정되지 않았습니다.");
+    }
+  }, []);
+
+  const handleFormSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    console.log("=== 폼 제출 시작 ===");
+    console.log("폼 데이터:", formData);
+
+    try {
+      // 1. Google Sheets에 데이터 저장
+      const GOOGLE_SCRIPT_URL = import.meta.env.VITE_GOOGLE_SCRIPT_URL || "";
+      console.log("Google Script URL:", GOOGLE_SCRIPT_URL ? "설정됨" : "없음");
+
+      if (GOOGLE_SCRIPT_URL) {
+        console.log("Google Sheets 저장 시작...");
+        const payload = {
+          name: formData.name,
+          phone: formData.phone,
+          email: formData.email,
+          message: formData.message,
+          timestamp: new Date().toISOString(),
+        };
+        console.log("전송할 데이터:", payload);
+
+        const sheetResponse = await fetch(GOOGLE_SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+        console.log("✅ Google Sheets 저장 완료");
+      } else {
+        console.warn("⚠️ Google Script URL이 설정되지 않았습니다.");
+      }
+
+      // 2. EmailJS로 이메일 전송
+      const emailServiceId = import.meta.env.VITE_EMAILJS_SERVICE_ID || "";
+      const emailTemplateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || "";
+      const emailPublicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || "";
+
+      console.log("EmailJS 환경변수:", {
+        serviceId: emailServiceId ? "설정됨" : "없음",
+        templateId: emailTemplateId ? "설정됨" : "없음",
+        publicKey: emailPublicKey ? "설정됨" : "없음",
+      });
+
+      if (emailServiceId && emailTemplateId && emailPublicKey) {
+        console.log("이메일 전송 시작...");
+        const emailParams = {
+          from_name: formData.name,
+          from_phone: formData.phone,
+          from_email: formData.email,
+          message: formData.message,
+          timestamp: new Date().toLocaleString("ko-KR"),
+        };
+        console.log("이메일 파라미터:", emailParams);
+
+        const response = await emailjs.send(
+          emailServiceId,
+          emailTemplateId,
+          emailParams,
+          emailPublicKey
+        );
+        console.log("✅ 이메일 전송 완료:", response);
+      } else {
+        console.warn("⚠️ EmailJS 환경변수가 모두 설정되지 않았습니다.");
+      }
+
+      console.log("=== 전송 성공 ===");
+      setSubmitStatus("success");
+      setFormData({ name: "", phone: "", email: "", message: "" });
+
+      setTimeout(() => {
+        setSubmitStatus("idle");
+      }, 3000);
+    } catch (error) {
+      console.error("❌ Form submit error:", error);
+      setSubmitStatus("error");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <>
@@ -35,20 +139,123 @@ export default function FinalCTA() {
               </p>
             </div>
 
-            {/* CTAs */}
-            <div className="flex flex-col sm:flex-row items-center gap-6 mt-8">
-              <CTAButton size="lg" onClick={() => setIsFormOpen(true)}>
-                지금 6개월 프리미엄 혜택 받고 시작하기
-              </CTAButton>
-              <CTAButton size="lg" variant="secondary" onClick={() => setIsFormOpen(true)}>
-                문의하기
-              </CTAButton>
+            {/* Contact Form */}
+            <div className="w-full max-w-2xl mt-8">
+              <form onSubmit={handleFormSubmit} className="space-y-4">
+                {/* 이름 */}
+                <div>
+                  <input
+                    type="text"
+                    required
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    placeholder="이름"
+                    className="w-full px-6 py-4 bg-dark-300 border border-gray-border rounded-lg text-white placeholder-gray-medium focus:border-white focus:outline-none transition-colors text-lg"
+                  />
+                </div>
+
+                {/* 연락처 */}
+                <div>
+                  <input
+                    type="tel"
+                    required
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    placeholder="연락처"
+                    className="w-full px-6 py-4 bg-dark-300 border border-gray-border rounded-lg text-white placeholder-gray-medium focus:border-white focus:outline-none transition-colors text-lg"
+                  />
+                </div>
+
+                {/* 이메일 */}
+                <div>
+                  <input
+                    type="email"
+                    required
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    placeholder="이메일"
+                    className="w-full px-6 py-4 bg-dark-300 border border-gray-border rounded-lg text-white placeholder-gray-medium focus:border-white focus:outline-none transition-colors text-lg"
+                  />
+                </div>
+
+                {/* 문의 내용 */}
+                <div>
+                  <textarea
+                    required
+                    rows={5}
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    placeholder="문의 내용을 입력하세요"
+                    className="w-full px-6 py-4 bg-dark-300 border border-gray-border rounded-lg text-white placeholder-gray-medium focus:border-white focus:outline-none transition-colors text-lg resize-none"
+                  />
+                </div>
+
+                {/* 보내기 버튼 */}
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full cta-button-primary text-white font-semibold px-8 py-4 rounded-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105 active:scale-95"
+                >
+                  {isSubmitting ? (
+                    "전송 중..."
+                  ) : (
+                    <>
+                      <Send size={20} />
+                      보내기
+                    </>
+                  )}
+                </button>
+
+                {/* Status Messages */}
+                {submitStatus === "success" && (
+                  <p className="text-green-400 text-center text-lg">문의가 성공적으로 전송되었습니다!</p>
+                )}
+                {submitStatus === "error" && (
+                  <p className="text-red-400 text-center text-lg">전송 중 오류가 발생했습니다. 다시 시도해주세요.</p>
+                )}
+              </form>
+
+              {/* Contact Button */}
+              <div className="mt-8">
+                <CTAButton size="lg" variant="secondary" onClick={() => setIsContactFormOpen(true)}>
+                  문의하기
+                </CTAButton>
+              </div>
             </div>
 
-            {/* Urgency Text */}
-            <p className="text-sm text-gray-medium mt-4">
-              (혜택 마감일 임박)
-            </p>
+            <style>{`
+              @keyframes gradient-shift {
+                0% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+              }
+
+              @keyframes glow-pulse {
+                0%, 100% {
+                  box-shadow: 0 0 20px rgba(220, 38, 38, 0.4),
+                              0 0 40px rgba(220, 38, 38, 0.2),
+                              0 0 60px rgba(220, 38, 38, 0.1);
+                }
+                50% {
+                  box-shadow: 0 0 30px rgba(220, 38, 38, 0.6),
+                              0 0 60px rgba(220, 38, 38, 0.3),
+                              0 0 90px rgba(220, 38, 38, 0.2);
+                }
+              }
+
+              .cta-button-primary {
+                background: linear-gradient(135deg, #dc2626, #ef4444, #f87171, #dc2626, #ef4444);
+                background-size: 300% 300%;
+                animation: gradient-shift 3s ease infinite, glow-pulse 2s ease-in-out infinite;
+                border: 2px solid rgba(255, 255, 255, 0.3);
+              }
+
+              .cta-button-primary:hover {
+                background: linear-gradient(135deg, #b91c1c, #dc2626, #ef4444, #b91c1c, #dc2626);
+                background-size: 300% 300%;
+                animation: gradient-shift 2s ease infinite, glow-pulse 1.5s ease-in-out infinite;
+              }
+            `}</style>
 
             {/* Additional Benefits */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 w-full max-w-4xl">
@@ -73,7 +280,7 @@ export default function FinalCTA() {
       </section>
 
       {/* Contact Form Modal */}
-      <ContactForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} />
+      <ContactForm isOpen={isContactFormOpen} onClose={() => setIsContactFormOpen(false)} />
     </>
   );
 }

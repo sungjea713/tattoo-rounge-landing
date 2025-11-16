@@ -106,11 +106,11 @@
   }
 
   .animate-slide-in-left {
-    animation: slideInFromLeft 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation: slideInFromLeft 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
 
   .animate-slide-in-right {
-    animation: slideInFromRight 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation: slideInFromRight 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
 
   /* Feature Gradient Animations */

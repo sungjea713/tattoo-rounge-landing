@@ -222,9 +222,9 @@ export default function PromptSection() {
       <section className="relative overflow-hidden bg-dark-50">
           <div
             ref={containerRef}
-            className="relative w-full overflow-hidden"
+            className="relative w-full overflow-hidden flex items-center justify-center"
             style={{
-              aspectRatio: "16 / 9",
+              height: "100vh",
               width: "100vw",
             }}
           >
@@ -266,29 +266,27 @@ export default function PromptSection() {
             </div>
 
             {/* 내용 오버레이 */}
-            <div className="relative z-10 h-full flex items-center justify-center">
-              <div className="text-center text-white px-6 max-w-4xl w-full">
-                <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
+            <div className="relative z-10 text-center text-white px-6 max-w-4xl w-full">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
                   이제 모든 도안은
                 </h2>
-                <p className="text-2xl md:text-3xl lg:text-4xl text-gradient font-semibold mb-8">
+                <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-gradient font-semibold mb-8">
                   프롬프트 몇마디로 해결
                 </p>
 
                 {/* 타이핑 입력창 */}
-                <div className="mt-12 max-w-2xl mx-auto">
-                  <div className="relative bg-white/10 backdrop-blur-sm rounded-xl px-6 py-4 border border-white/20 shadow-2xl">
+                <div className="mt-8 sm:mt-12 max-w-2xl mx-auto">
+                  <div className="relative bg-white/10 backdrop-blur-sm rounded-xl px-4 sm:px-6 py-3 sm:py-4 border border-white/20 shadow-2xl">
                     <div className="flex items-center gap-3">
                       <div className="flex-1 text-left">
-                        <span className="text-xl md:text-2xl text-white font-light">
+                        <span className="text-lg sm:text-xl md:text-2xl text-white font-light">
                           {typedText}
-                          <span className="cursor-blink inline-block w-0.5 h-6 md:h-7 bg-white ml-1 align-middle"></span>
+                          <span className="cursor-blink inline-block w-0.5 h-5 sm:h-6 md:h-7 bg-white ml-1 align-middle"></span>
                         </span>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
             </div>
           </div>
       </section>

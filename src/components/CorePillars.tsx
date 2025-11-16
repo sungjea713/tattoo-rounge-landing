@@ -118,8 +118,8 @@ export default function CorePillars() {
         {/* Section Title */}
         <div className="text-center mb-16 md:mb-24 relative">
           <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight relative z-10">
-            <span className="block mb-4">우리는 당신의 예술과 비즈니스,</span>
-            <span className="block">그리고 미래를 위한 정밀한 도구를 제공합니다.</span>
+            <span className="block mb-4">타투의 예술과 비즈니스,</span>
+            <span className="block mb-4">그리고 미래를 위한 정밀한 도구.</span>
           </h2>
           <p className="text-xl md:text-2xl text-gray-light max-w-3xl mx-auto relative z-10">
             이제 모든 잠재력을 펼치세요.

@@ -97,7 +97,7 @@ export default function PrecisionTools() {
         {/* Section Title */}
         <div className="text-center mb-20 md:mb-32 relative">
           <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight relative z-10">
-            <span className="block mb-4">당신의 예술과 비즈니스를 위한</span>
+            <span className="block mb-4">타투의 예술과 비즈니스를 위한</span>
             <span className="text-gradient block">정밀한 도구.</span>
           </h2>
 

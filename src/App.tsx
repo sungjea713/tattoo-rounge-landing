@@ -8,6 +8,7 @@ import PromptSection from "./components/PromptSection";
 import AIGallery from "./components/AIGallery";
 import NewsGatherSection from "./components/NewsGatherSection";
 import FinalCTA from "./components/FinalCTA";
+import Footer from "./components/Footer";
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
       <NewsGatherSection />
       <CorePillars />
       <FinalCTA />
+      <Footer />
     </Layout>
   );
 }

@@ -4,7 +4,7 @@ import { Phone, Globe } from "lucide-react";
 export default function Footer() {
   return (
     <footer className="bg-dark-300 border-t border-gray-border py-8">
-      <div className="container-custom">
+      <div className="container-custom px-6">
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
           {/* Company Info */}
           <div className="text-center md:text-left">

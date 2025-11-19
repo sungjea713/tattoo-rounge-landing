@@ -7,6 +7,7 @@ export default function FinalCTA() {
     name: "",
     phone: "",
     email: "",
+    instagram: "",
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -40,6 +41,7 @@ export default function FinalCTA() {
           name: formData.name,
           phone: formData.phone,
           email: formData.email,
+          instagram: formData.instagram,
           message: formData.message,
           timestamp: new Date().toISOString(),
         };
@@ -75,6 +77,7 @@ export default function FinalCTA() {
           from_name: formData.name,
           from_phone: formData.phone,
           from_email: formData.email,
+          from_instagram: formData.instagram,
           message: formData.message,
           timestamp: new Date().toLocaleString("ko-KR"),
         };
@@ -93,7 +96,7 @@ export default function FinalCTA() {
 
       console.log("=== 전송 성공 ===");
       setSubmitStatus("success");
-      setFormData({ name: "", phone: "", email: "", message: "" });
+      setFormData({ name: "", phone: "", email: "", instagram: "", message: "" });
 
       setTimeout(() => {
         setSubmitStatus("idle");
@@ -171,6 +174,17 @@ export default function FinalCTA() {
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     placeholder="이메일"
+                    className="w-full px-6 py-4 bg-dark-300 border border-gray-border rounded-lg text-white placeholder-gray-medium focus:border-white focus:outline-none transition-colors text-lg"
+                  />
+                </div>
+
+                {/* 인스타그램 아이디 */}
+                <div>
+                  <input
+                    type="text"
+                    value={formData.instagram}
+                    onChange={(e) => setFormData({ ...formData, instagram: e.target.value })}
+                    placeholder="인스타그램 아이디 (선택)"
                     className="w-full px-6 py-4 bg-dark-300 border border-gray-border rounded-lg text-white placeholder-gray-medium focus:border-white focus:outline-none transition-colors text-lg"
                   />
                 </div>

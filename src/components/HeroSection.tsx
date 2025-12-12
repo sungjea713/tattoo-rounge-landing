@@ -186,7 +186,7 @@ export default function HeroSection() {
               `}</style>
               <p className="text-base md:text-lg">
                 <span className="ambient-led-text">사전 접수 할인혜택:</span>{' '}
-                <span className="text-white font-normal">~ 2025년 11월 30일</span>
+                <span className="text-white font-normal">~ 2025년 12월 31일</span>
               </p>
             </div>
           </div>

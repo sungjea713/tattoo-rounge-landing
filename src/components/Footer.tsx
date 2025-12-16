@@ -8,8 +8,13 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
           {/* Company Info */}
           <div className="text-center md:text-left">
-            <p className="text-gray-light text-sm mb-2">
+            <p className="text-gray-light text-sm mb-1">
+              상호: <span className="text-white font-medium">웨버</span>
+              <span className="mx-2 text-gray-600">|</span>
               대표: <span className="text-white font-medium">김성재</span>
+            </p>
+            <p className="text-gray-light text-sm mb-2">
+              사업자등록번호: <span className="text-white font-medium">847-05-03134</span>
             </p>
             <p className="text-gray-400 text-xs">
               © 2024 Tattoo Rounge. All rights reserved.
